@@ -1,0 +1,33 @@
+
+from openai import OpenAI
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+os.environ.get("OPEN_API_KEY")
+
+
+api_key = os.environ.get("OPEN_API_KEY")
+client = OpenAI(
+    api_key= api_key
+)
+messages = []
+while True:
+    print("질문을 그만하시려면 q 혹은 Q를 눌러주세요")
+    content = input("사용자: ")
+    messages.append({"role" : "user", "content" : content})
+
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=messages
+    )
+
+    chat_response = response.choices[0].message.content
+    print(f"ChatGPT : {chat_response}")
+    messages.append({"role" : "assistant", "content" : chat_response})
+    
+
+    if content == 'q' or content == 'Q':
+
+        break
